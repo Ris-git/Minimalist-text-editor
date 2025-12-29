@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A minimalist, distraction-free text editor for writers and students">
+    <title>Minimal Text Editor</title>
+    <link rel="stylesheet" href="/src/styles.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <div class="app-container" data-theme="light">
+        <!-- Header Bar (always visible) -->
+        <header class="header" role="banner">
+            <div class="header-left">
+                <button class="btn-text" id="new-btn" aria-label="Create new text file" title="Create new text file">
+                    <span class="btn-icon-text">+</span>
+                    <span class="btn-text-label">New</span>
+                </button>
+                <button class="btn-text" id="open-btn" aria-label="Open file" title="Open file">
+                    <span class="btn-icon-text">📁</span>
+                    <span class="btn-text-label">Open</span>
+                </button>
+                <div class="file-type-indicator">
+                    <span class="file-icon">📄</span>
+                    <span class="file-extension" id="file-extension">.txt</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="menu-dropdown-container">
+                    <button class="btn-icon" id="menu-btn" aria-label="Menu" title="Menu">
+                        <span class="icon">⋮</span>
+                    </button>
+                    <div class="menu-dropdown" id="menu-dropdown">
+                        <button class="menu-item" id="menu-save-as">
+                            <span class="menu-icon">💾</span>
+                            <span class="menu-text">Save as</span>
+                        </button>
+                        <button class="menu-item" id="menu-delete">
+                            <span class="menu-icon">🗑️</span>
+                            <span class="menu-text">Delete</span>
+                        </button>
+                        <button class="menu-item" id="menu-download">
+                            <span class="menu-icon">⬇️</span>
+                            <span class="menu-text">Download</span>
+                        </button>
+                        <button class="menu-item" id="menu-clear-data">
+                            <span class="menu-icon">🗃️</span>
+                            <span class="menu-text">Clear All Local Data</span>
+                        </button>
+                        <button class="menu-item" id="menu-shortcut">
+                            <span class="menu-icon">⌨️</span>
+                            <span class="menu-text">Shortcut</span>
+                        </button>
+                        <button class="menu-item" id="menu-cloud-storage">
+                            <span class="menu-icon">☁️</span>
+                            <span class="menu-text">Connected Cloud Storages</span>
+                        </button>
+                        <button class="menu-item" id="menu-about">
+                            <span class="menu-icon">ℹ️</span>
+                            <span class="menu-text">About</span>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn-icon" id="settings-btn" aria-label="Settings" title="Settings">
+                    <span class="icon">⚙</span>
+                </button>
+                <button class="btn-save" id="save-btn" aria-label="Save" title="Save (Cmd/Ctrl+S)">
+                    Save
+                </button>
+                <div class="mode-indicator">
+                    <span class="mode-icon">✎</span>
+                    <span class="mode-text">Editing</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Editor -->
+        <main class="editor-container" role="main">
+            <div 
+                class="editor" 
+                id="editor" 
+                contenteditable="true" 
+                role="textbox" 
+                aria-label="Text editor"
+                spellcheck="true"
+                autofocus
+            ></div>
+        </main>
+
+        <!-- Status Bar (bottom) -->
+        <footer class="status-bar" role="contentinfo">
+            <div class="status-stats" id="status-stats" aria-live="polite">
+                <span class="stat-item" id="line-count">1 lines</span>
+                <span class="stat-separator">|</span>
+                <span class="stat-item" id="word-count">0 words</span>
+                <span class="stat-separator">|</span>
+                <span class="stat-item" id="char-count">0 chars</span>
+            </div>
+            <span class="status-item" id="save-status"></span>
+        </footer>
+
+        <!-- Export Menu Modal -->
+        <div class="modal" id="export-modal" role="dialog" aria-labelledby="export-modal-title" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="export-modal-title">Export Document</h2>
+                    <button class="btn-icon modal-close" id="export-close" aria-label="Close export menu">
+                        <span class="icon">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button class="btn-primary" id="export-txt">Export as TXT</button>
+                    <button class="btn-primary" id="export-md">Export as Markdown</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Sidebar -->
+        <div class="settings-sidebar" id="settings-sidebar" aria-hidden="true">
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <button class="btn-icon settings-close" id="settings-close" aria-label="Close settings">
+                    <span class="icon">×</span>
+                </button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-group">
+                    <label class="setting-label">Background:</label>
+                    <input type="color" id="setting-bg-color" class="setting-color" value="#ffffff" title="Background color">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Font Color:</label>
+                    <input type="color" id="setting-font-color" class="setting-color" value="#1a1a1a" title="Font color">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Font Size:</label>
+                    <input type="text" id="setting-font-size" class="setting-input" value="18" placeholder="14pt">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Font:</label>
+                    <input type="text" id="setting-font-family" class="setting-input" value="Verdana" placeholder="Font name">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Line Height:</label>
+                    <input type="text" id="setting-line-height" class="setting-input" value="1.6" placeholder="1.6">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Width(px):</label>
+                    <input type="text" id="setting-width" class="setting-input" value="800" placeholder="800">
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Statistics:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-statistics" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label">Scrollbar:</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-scrollbar" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <button class="btn-restore" id="restore-defaults">Restore defaults</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cloud Sync Modal -->
+        <div class="modal" id="cloud-modal" role="dialog" aria-labelledby="cloud-modal-title" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="cloud-modal-title">Cloud Sync</h2>
+                    <button class="btn-icon modal-close" id="cloud-close" aria-label="Close cloud menu">
+                        <span class="icon">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="cloud-section">
+                        <h3>Google Drive</h3>
+                        <button class="btn-primary" id="google-connect">Connect</button>
+                        <button class="btn-secondary" id="google-sync" style="display: none;">Sync Now</button>
+                        <span class="cloud-status" id="google-status"></span>
+                    </div>
+                    <div class="cloud-section">
+                        <h3>Dropbox</h3>
+                        <button class="btn-primary" id="dropbox-connect">Connect</button>
+                        <button class="btn-secondary" id="dropbox-sync" style="display: none;">Sync Now</button>
+                        <span class="cloud-status" id="dropbox-status"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+

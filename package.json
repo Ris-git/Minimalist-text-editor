@@ -1,0 +1,23 @@
+{
+  "name": "minimal-text-editor",
+  "version": "1.0.0",
+  "description": "A minimalist, distraction-free online text editor",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "text-editor",
+    "markdown",
+    "pwa",
+    "offline-first"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
+
