@@ -4,29 +4,124 @@
  */
 
 /* CSS Variables for Theme Support */
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Open+Sans:wght@400;600&display=swap');
+
+@theme {
+  --font-head: 'Archivo Black', sans-serif;
+  --font-sans: 'Space Grotesk', sans-serif;
+
+  --radius: var(--radius);
+
+  --shadow-xs: 1px 1px 0 0 var(--border);
+  --shadow-sm: 2px 2px 0 0 var(--border);
+  --shadow: 3px 3px 0 0 var(--border);
+  --shadow-md: 4px 4px 0 0 var(--border);
+  --shadow-lg: 6px 6px 0 0 var(--border);
+  --shadow-xl: 10px 10px 0 1px var(--border);
+  --shadow-2xl: 16px 16px 0 1px var(--border);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+}
+
+/* RetroUI base light theme tokens */
 :root {
-  /* Light Theme */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --border-color: #e0e0e0;
-  --accent-color: #0066cc;
-  --accent-hover: #0052a3;
-  --shadow: rgba(0, 0, 0, 0.1);
+  --radius: 0;
+  --background: #fff;
+  --foreground: #000;
+  --card: #fff;
+  --card-foreground: #000;
+  --primary: #ffdb33;
+  --primary-hover: #ffcc00;
+  --primary-foreground: #000;
+  --secondary: #000;
+  --secondary-foreground: #fff;
+  --muted: #aeaeae;
+  --muted-foreground: #5a5a5a;
+  --accent: #fae583;
+  --accent-foreground: #000;
+  --destructive: #e63946;
+  --destructive-foreground: #fff;
+  --border: #000;
+
+  /* Map existing app variables to RetroUI tokens */
+  --bg-primary: var(--color-background);
+  --bg-secondary: var(--color-card);
+  --text-primary: var(--color-foreground);
+  --text-secondary: var(--color-muted-foreground);
+  --border-color: var(--color-border);
+  --accent-color: var(--color-primary);
+  --accent-hover: var(--color-primary-hover);
+  --shadow: var(--shadow-md);
   --modal-overlay: rgba(0, 0, 0, 0.5);
 }
 
-[data-theme="dark"] {
-  /* Dark Theme */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --text-primary: #e0e0e0;
-  --text-secondary: #999999;
-  --border-color: #404040;
-  --accent-color: #4da6ff;
-  --accent-hover: #66b3ff;
-  --shadow: rgba(0, 0, 0, 0.3);
+/* RetroUI dark theme tokens (global .dark for Tailwind and scoped app container) */
+.dark {
+  --radius: 0;
+  --background: #1a1a1a;
+  --foreground: #f5f5f5;
+  --card: #242424;
+  --card-foreground: #f5f5f5;
+  --primary: #ffdb33;
+  --primary-hover: #ffcc00;
+  --primary-foreground: #000;
+  --secondary: #3a3a3a;
+  --secondary-foreground: #f5f5f5;
+  --muted: #3f3f46;
+  --muted-foreground: #a0a0a0;
+  --accent: #fae583;
+  --accent-foreground: #000;
+  --destructive: #e63946;
+  --destructive-foreground: #fff;
+  --border: #3a3a3a;
+}
+
+/* Scoped override for the existing data-theme toggle */
+.app-container[data-theme="dark"] {
+  --radius: 0;
+  --background: #1a1a1a;
+  --foreground: #f5f5f5;
+  --card: #242424;
+  --card-foreground: #f5f5f5;
+  --primary: #ffdb33;
+  --primary-hover: #ffcc00;
+  --primary-foreground: #000;
+  --secondary: #3a3a3a;
+  --secondary-foreground: #f5f5f5;
+  --muted: #3f3f46;
+  --muted-foreground: #a0a0a0;
+  --accent: #fae583;
+  --accent-foreground: #000;
+  --destructive: #e63946;
+  --destructive-foreground: #fff;
+  --border: #3a3a3a;
+
+  /* Map to legacy variables */
+  --bg-primary: var(--color-background);
+  --bg-secondary: var(--color-card);
+  --text-primary: var(--color-foreground);
+  --text-secondary: var(--color-muted-foreground);
+  --border-color: var(--color-border);
+  --accent-color: var(--color-primary);
+  --accent-hover: var(--color-primary-hover);
+  --shadow: var(--shadow-md);
   --modal-overlay: rgba(0, 0, 0, 0.7);
 }
 
@@ -39,7 +134,7 @@
 
 html, body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -72,6 +167,8 @@ html, body {
   justify-content: space-between;
   padding: 0 16px;
   z-index: 100;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  will-change: transform, opacity;
 }
 
 .header-left,
@@ -79,6 +176,16 @@ html, body {
   display: flex;
   gap: 16px;
   align-items: center;
+}
+
+.app-container.focus-mode .header {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.app-container.focus-mode .editor-container {
+  padding-top: 16px;
 }
 
 /* Text Buttons */
@@ -114,6 +221,44 @@ html, body {
   justify-content: center;
   width: 18px;
   height: 18px;
+}
+
+/* Circle around New icon - no yellow background */
+.btn-new-circle .btn-icon-text {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Ensure RetroUI buttons work with btn-text base styles */
+.btn-text.btn-retro {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-text.btn-retro:hover {
+  background-color: var(--bg-secondary);
+}
+
+.btn-text.btn-retro:active {
+  transform: scale(0.98);
 }
 
 #new-btn .btn-icon-text {
@@ -202,7 +347,7 @@ html, body {
   padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
@@ -220,6 +365,12 @@ html, body {
   background-color: var(--border-color);
 }
 
+.menu-item {
+  gap: 0;
+  padding: 8px 16px;
+  gap: 16px;
+}
+
 .menu-icon {
   font-size: 16px;
   line-height: 1;
@@ -229,8 +380,51 @@ html, body {
   justify-content: center;
 }
 
+/* Ensure Lucide icons match menu icon sizing */
+.menu-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
 .menu-text {
   font-weight: 500;
+}
+
+.menu-separator {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 6px 0;
+}
+
+.menu-font-row {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.menu-font-select {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 6px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+}
+
+.menu-font-select:hover {
+  background-color: var(--bg-secondary);
+}
+
+.menu-svg {
+  display: block;
 }
 
 /* Icon Buttons */
@@ -289,6 +483,77 @@ html, body {
   background-color: #2a7edf;
 }
 
+/* RetroUI Button Styles (vanilla CSS approximation of cva variants) */
+.btn-retro {
+  font-family: var(--font-head, inherit);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 2px solid #000;
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-retro.btn-retro-sm { padding: 6px 12px; font-size: 14px; }
+.btn-retro.btn-retro-md { padding: 6px 16px; font-size: 15px; }
+.btn-retro.btn-retro-lg { padding: 10px 20px; font-size: 16px; }
+.btn-retro.btn-retro-icon { padding: 8px; }
+
+/* Variants */
+.btn-retro-outline {
+  background: transparent;
+  color: var(--text-primary);
+}
+.btn-retro-outline:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-retro-outline:active { transform: translateY(2px) translateX(1px); box-shadow: none; }
+
+.btn-retro-default {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-retro-default:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-retro-default:active { transform: translateY(2px) translateX(1px); box-shadow: none; }
+
+.btn-retro-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.btn-retro-secondary:hover { background: var(--secondary-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-retro-secondary:active { transform: translateY(2px) translateX(1px); box-shadow: none; }
+
+.btn-retro-ghost {
+  background: transparent;
+}
+.btn-retro-ghost:hover { background: var(--accent); }
+
+/* Export Modal Buttons - Blue color */
+.export-btn {
+  background-color: #4A9EFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin: 8px 0;
+  width: 100%;
+  max-width: 280px;
+}
+
+.export-btn:hover {
+  background-color: #3a8eef;
+  transform: translateY(-1px);
+}
+
+.export-btn:active {
+  background-color: #2a7edf;
+  transform: translateY(0);
+}
+
 /* Editor Container */
 .editor-container {
   flex: 1;
@@ -308,10 +573,10 @@ html, body {
   padding: 48px 24px;
   font-size: 18px;
   line-height: 1.8;
-  color: var(--text-primary);
+  color: #E6E6E6;
   outline: none;
   background-color: var(--bg-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Roboto Mono', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   word-wrap: break-word;
@@ -324,7 +589,7 @@ html, body {
 }
 
 .editor p {
-  margin-bottom: 1.2em;
+  margin: 18px 0;
 }
 
 .editor br {
@@ -444,6 +709,10 @@ html, body {
 
 .modal-body {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 /* Buttons in Modal */
@@ -534,6 +803,13 @@ html, body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
+}
+
+/* Focus Mode */
+.app-container.focus-mode .header,
+.app-container.focus-mode .status-bar {
+  transform: translateY(-100%);
+  opacity: 0;
 }
 
 /* Responsive Design */

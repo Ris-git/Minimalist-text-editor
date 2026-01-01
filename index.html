@@ -14,7 +14,7 @@
         <!-- Header Bar (always visible) -->
         <header class="header" role="banner">
             <div class="header-left">
-                <button class="btn-text" id="new-btn" aria-label="Create new text file" title="Create new text file">
+                <button class="btn-text btn-new-circle" id="new-btn" aria-label="Create new text file" title="Create new text file">
                     <span class="btn-icon-text">+</span>
                     <span class="btn-text-label">New</span>
                 </button>
@@ -22,7 +22,7 @@
                     <span class="btn-icon-text">📁</span>
                     <span class="btn-text-label">Open</span>
                 </button>
-                <div class="file-type-indicator">
+                <div class="file-type-indicator" style="display: none;">
                     <span class="file-icon">📄</span>
                     <span class="file-extension" id="file-extension">.txt</span>
                 </div>
@@ -34,39 +34,64 @@
                     </button>
                     <div class="menu-dropdown" id="menu-dropdown">
                         <button class="menu-item" id="menu-save-as">
-                            <span class="menu-icon">💾</span>
+                            <span class="menu-icon"><i data-lucide="save"></i></span>
                             <span class="menu-text">Save as</span>
                         </button>
                         <button class="menu-item" id="menu-delete">
-                            <span class="menu-icon">🗑️</span>
+                            <span class="menu-icon"><i data-lucide="trash-2"></i></span>
                             <span class="menu-text">Delete</span>
                         </button>
                         <button class="menu-item" id="menu-download">
-                            <span class="menu-icon">⬇️</span>
+                            <span class="menu-icon"><i data-lucide="download"></i></span>
                             <span class="menu-text">Download</span>
                         </button>
                         <button class="menu-item" id="menu-clear-data">
-                            <span class="menu-icon">🗃️</span>
+                            <span class="menu-icon"><i data-lucide="archive"></i></span>
                             <span class="menu-text">Clear All Local Data</span>
                         </button>
                         <button class="menu-item" id="menu-shortcut">
-                            <span class="menu-icon">⌨️</span>
+                            <span class="menu-icon"><i data-lucide="keyboard"></i></span>
                             <span class="menu-text">Shortcut</span>
                         </button>
                         <button class="menu-item" id="menu-cloud-storage">
-                            <span class="menu-icon">☁️</span>
+                            <span class="menu-icon"><i data-lucide="cloud"></i></span>
                             <span class="menu-text">Connected Cloud Storages</span>
                         </button>
+
+                        <div class="menu-separator" role="separator"></div>
+
+                        <div class="menu-font-row">
+                            <span class="menu-text">Font</span>
+                            <select class="menu-font-select" id="menu-font-dropdown" aria-label="Select font">
+                                <option value="Verdana">Verdana</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Trebuchet MS">Trebuchet MS</option>
+                                <option value="Comic Sans MS">Comic Sans MS</option>
+                            </select>
+                        </div>
+
+                        <button class="menu-item" id="menu-fullscreen" aria-pressed="false">
+                            <span class="menu-icon" aria-hidden="true"><i data-lucide="maximize-2"></i></span>
+                            <span class="menu-text">Toggle full screen</span>
+                        </button>
+
+                        <div class="menu-separator" role="separator"></div>
+
                         <button class="menu-item" id="menu-about">
-                            <span class="menu-icon">ℹ️</span>
+                            <span class="menu-icon"><i data-lucide="info"></i></span>
                             <span class="menu-text">About</span>
                         </button>
+                        
                     </div>
                 </div>
                 <button class="btn-icon" id="settings-btn" aria-label="Settings" title="Settings">
                     <span class="icon">⚙</span>
                 </button>
-                <button class="btn-save" id="save-btn" aria-label="Save" title="Save (Cmd/Ctrl+S)">
+                <button class="btn-save btn-retro btn-retro-outline" id="save-btn" aria-label="Save" title="Save (Cmd/Ctrl+S)">
                     Save
                 </button>
                 <div class="mode-indicator">
@@ -111,8 +136,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button class="btn-primary" id="export-txt">Export as TXT</button>
-                    <button class="btn-primary" id="export-md">Export as Markdown</button>
+                    <button class="export-btn" id="export-txt">Export as TXT</button>
+                    <button class="export-btn" id="export-md">Export as Markdown</button>
                 </div>
             </div>
         </div>
@@ -197,6 +222,19 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+      // Initialize Lucide icons once DOM is ready
+      (function(){
+        if (window.lucide && window.lucide.createIcons) {
+          window.lucide.createIcons();
+        } else {
+          document.addEventListener('DOMContentLoaded', function(){
+            if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+          });
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -34,6 +34,14 @@ class UI {
   setTheme(theme) {
     this.appContainer.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
+
+    // Sync with Tailwind/RetroUI dark mode convention
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
     
     // Update theme color meta tag
     const metaTheme = document.querySelector('meta[name="theme-color"]');
