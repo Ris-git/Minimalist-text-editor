@@ -700,6 +700,37 @@ body {
   overflow: hidden;
 }
 
+/* Blinking cursor effect */
+.editor.blinking-cursor::after {
+  content: '';
+  position: absolute;
+  right: 48px;
+  bottom: 48px;
+  width: 2px;
+  height: 1.2em;
+  background-color: var(--text-primary);
+  animation: blink 1s step-end infinite;
+  z-index: 10;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Adjust cursor position for Sandpaper theme */
+.app-container[data-theme="sandpaper"] .editor.blinking-cursor::after {
+  right: 48px;
+  bottom: 48px;
+  background-color: #444;
+}
+
+/* Adjust cursor position for Notebook theme */
+.app-container[data-theme="notebook"] .editor.blinking-cursor::after {
+  right: 30px;
+  bottom: 30px;
+}
+
 /* Formatting Toolbar */
 .formatting-toolbar {
   position: fixed;

@@ -32,6 +32,9 @@ class Editor {
     // If no content, show demo typewriter effect
     if (!this.editorEl.innerHTML.trim()) {
       this.showTypewriterDemo();
+    } else {
+      // Add blinking cursor for existing content
+      this.startBlinkingCursor();
     }
 
     // Focus editor
@@ -183,15 +186,57 @@ class Editor {
       </div>
     `;
     
+    // Start blinking cursor after demo
+    setTimeout(() => {
+      this.startBlinkingCursor();
+    }, 4000); // Start after typewriter effect completes
+    
     // Clear demo after user starts typing
     setTimeout(() => {
       this.editorEl.addEventListener('input', () => {
         if (this.editorEl.innerHTML.includes('Build awesome apps')) {
           this.editorEl.innerHTML = '';
           this.editorEl.focus();
+          this.startBlinkingCursor();
         }
       }, { once: true });
     }, 1000);
+  }
+
+  /**
+   * Start blinking cursor effect
+   */
+  startBlinkingCursor() {
+    // Add blinking cursor class
+    this.editorEl.classList.add('blinking-cursor');
+    
+    // Remove blinking cursor when user starts typing
+    const removeCursor = () => {
+      this.editorEl.classList.remove('blinking-cursor');
+      this.editorEl.removeEventListener('input', removeCursor);
+      this.editorEl.removeEventListener('keydown', removeCursor);
+    };
+    
+    this.editorEl.addEventListener('input', removeCursor);
+    this.editorEl.addEventListener('keydown', removeCursor);
+    
+    // Also remove when editor loses focus
+    const removeCursorOnBlur = () => {
+      this.editorEl.classList.remove('blinking-cursor');
+      this.editorEl.removeEventListener('blur', removeCursorOnBlur);
+    };
+    
+    this.editorEl.addEventListener('blur', removeCursorOnBlur);
+    
+    // Re-add when editor gains focus again (if empty)
+    const addCursorOnFocus = () => {
+      if (!this.editorEl.innerHTML.trim()) {
+        this.editorEl.classList.add('blinking-cursor');
+      }
+      this.editorEl.removeEventListener('focus', addCursorOnFocus);
+    };
+    
+    this.editorEl.addEventListener('focus', addCursorOnFocus);
   }
 
   /**
