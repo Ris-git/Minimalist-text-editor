@@ -29,13 +29,8 @@ class Editor {
     // Load saved content
     await this.loadContent();
 
-    // If no content, show demo typewriter effect
-    if (!this.editorEl.innerHTML.trim()) {
-      this.showTypewriterDemo();
-    } else {
-      // Add blinking cursor for existing content
-      this.startBlinkingCursor();
-    }
+    // Always show blinking cursor (no demo content)
+    this.startBlinkingCursor();
 
     // Focus editor
     this.editorEl.focus();
