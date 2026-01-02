@@ -454,5 +454,78 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('fullscreenchange', updateFullscreenUI);
 document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
 
+// Mobile touch functionality
+let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+if (isMobile) {
+  const appContainer = document.querySelector('.app-container');
+  const header = document.querySelector('.header');
+  let lastTap = 0;
+
+  // Tap to show/hide header on mobile
+  document.addEventListener('touchstart', (e) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    
+    if (tapLength < 500 && tapLength > 0) {
+      // Double tap - toggle header
+      e.preventDefault();
+      appContainer.classList.toggle('focus-mode');
+    }
+    
+    lastTap = currentTime;
+  });
+
+  // Single tap on editor area to show header
+  const editor = document.getElementById('editor');
+  editor.addEventListener('touchend', (e) => {
+    // Only show header if in focus mode and not selecting text
+    if (appContainer.classList.contains('focus-mode') && !window.getSelection().toString()) {
+      setTimeout(() => {
+        appContainer.classList.remove('focus-mode');
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+          if (!appContainer.classList.contains('focus-mode')) {
+            appContainer.classList.add('focus-mode');
+          }
+        }, 3000);
+      }, 100);
+    }
+  });
+
+  // Prevent focus mode on menu interactions
+  const menuBtn = document.getElementById('menu-btn');
+  const settingsBtn = document.getElementById('settings-btn');
+  
+  [menuBtn, settingsBtn].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        appContainer.classList.remove('focus-mode');
+      });
+    }
+  });
+
+  // Handle keyboard show/hide on mobile
+  window.addEventListener('resize', () => {
+    const isKeyboardVisible = window.innerHeight < window.screen.height * 0.75;
+    
+    if (isKeyboardVisible) {
+      // Keyboard is visible - hide header
+      appContainer.classList.add('focus-mode');
+    } else {
+      // Keyboard is hidden - show header briefly
+      appContainer.classList.remove('focus-mode');
+      setTimeout(() => {
+        appContainer.classList.add('focus-mode');
+      }, 2000);
+    }
+  });
+
+  // Initialize in focus mode for mobile
+  appContainer.classList.add('focus-mode');
+}
+
 console.log('Minimal Text Editor initialized');
 
