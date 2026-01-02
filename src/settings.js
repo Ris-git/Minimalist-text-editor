@@ -13,6 +13,7 @@ class Settings {
     this.statusBar = document.querySelector('.status-bar');
     
     // Settings inputs
+    this.theme = document.getElementById('setting-theme');
     this.bgColor = document.getElementById('setting-bg-color');
     this.fontColor = document.getElementById('setting-font-color');
     this.fontSize = document.getElementById('setting-font-size');
@@ -24,6 +25,7 @@ class Settings {
     this.restoreBtn = document.getElementById('restore-defaults');
     
     this.defaults = {
+      theme: 'light',
       bgColor: '#ffffff',
       fontColor: '#1a1a1a',
       fontSize: '18',
@@ -58,6 +60,7 @@ class Settings {
     });
     
     // Settings change handlers
+    this.theme.addEventListener('change', () => this.updateTheme());
     this.bgColor.addEventListener('change', () => this.updateBackgroundColor());
     this.bgColor.addEventListener('input', () => this.updateColorPreview(this.bgColor, 'bg'));
     this.fontColor.addEventListener('change', () => this.updateFontColor());
@@ -88,6 +91,13 @@ class Settings {
     const color = colorInput.value;
     colorInput.style.setProperty('--preview-color', color);
     colorInput.setAttribute('data-color-preview', color.toUpperCase());
+  }
+
+  updateTheme() {
+    const theme = this.theme.value;
+    const appContainer = document.querySelector('.app-container');
+    appContainer.setAttribute('data-theme', theme);
+    this.saveSettings();
   }
 
   updateBackgroundColor() {
@@ -163,6 +173,7 @@ class Settings {
 
   restoreDefaults() {
     if (confirm('Restore all settings to defaults?')) {
+      this.theme.value = this.defaults.theme;
       this.bgColor.value = this.defaults.bgColor;
       this.fontColor.value = this.defaults.fontColor;
       this.fontSize.value = this.defaults.fontSize;
@@ -185,6 +196,7 @@ class Settings {
   applyAllSettings() {
     this.updateColorPreview(this.bgColor, 'bg');
     this.updateColorPreview(this.fontColor, 'font');
+    this.updateTheme();
     this.updateBackgroundColor();
     this.updateFontColor();
     this.updateFontSize();
@@ -197,6 +209,7 @@ class Settings {
 
   saveSettings() {
     const settings = {
+      theme: this.theme.value,
       bgColor: this.bgColor.value,
       fontColor: this.fontColor.value,
       fontSize: this.fontSize.value,
@@ -214,6 +227,7 @@ class Settings {
     if (saved) {
       try {
         const settings = JSON.parse(saved);
+        this.theme.value = settings.theme || this.defaults.theme;
         this.bgColor.value = settings.bgColor || this.defaults.bgColor;
         this.fontColor.value = settings.fontColor || this.defaults.fontColor;
         this.fontSize.value = settings.fontSize || this.defaults.fontSize;

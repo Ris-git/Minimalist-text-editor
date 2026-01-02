@@ -11,6 +11,8 @@ class Editor {
     this.editorEl = document.getElementById('editor');
     this.saveDebounceTimer = null;
     this.saveDebounceDelay = 500; // 500ms delay for auto-save
+    this.typingTimer = null;
+    this.isTyping = false;
     
     this.init();
   }
@@ -26,6 +28,11 @@ class Editor {
 
     // Load saved content
     await this.loadContent();
+
+    // If no content, show demo typewriter effect
+    if (!this.editorEl.innerHTML.trim()) {
+      this.showTypewriterDemo();
+    }
 
     // Focus editor
     this.editorEl.focus();
@@ -103,11 +110,88 @@ class Editor {
     // Update stats immediately
     ui.updateStats(this.getTextContent());
 
+    // Handle typewriter effect
+    this.handleTypewriterEffect();
+
     // Debounce save
     clearTimeout(this.saveDebounceTimer);
     this.saveDebounceTimer = setTimeout(() => {
       this.save();
     }, this.saveDebounceDelay);
+  }
+
+  /**
+   * Handle typewriter effect
+   */
+  handleTypewriterEffect() {
+    // Clear existing timer
+    clearTimeout(this.typingTimer);
+    
+    // Add typing class if not already present
+    if (!this.isTyping) {
+      this.isTyping = true;
+      this.editorEl.classList.add('typing');
+    }
+    
+    // Set timer to remove typing class after typing stops
+    this.typingTimer = setTimeout(() => {
+      this.isTyping = false;
+      this.editorEl.classList.remove('typing');
+    }, 1000); // Remove effect 1 second after typing stops
+  }
+
+  /**
+   * Create smooth typewriter effect for demo text
+   */
+  createSmoothTypewriterEffect(text, className = '') {
+    const words = text.split(' ');
+    let html = '';
+    
+    words.forEach((word, index) => {
+      const wordClass = className && index === words.length - 1 ? className : '';
+      html += `<span class="typewriter-word ${wordClass}" style="animation-delay: ${index * 0.5}s">${word}</span>`;
+      if (index < words.length - 1) {
+        html += ' ';
+      }
+    });
+    
+    return `<div class="typewriter-container">${html}</div>`;
+  }
+
+  /**
+   * Show typewriter demo on first load
+   */
+  showTypewriterDemo() {
+    const demoText = "Build awesome apps with Aceternity.";
+    const demoHtml = this.createSmoothTypewriterEffect(demoText, 'text-blue-500');
+    
+    // Add demo content with subtitle
+    this.editorEl.innerHTML = `
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+          The road to freedom starts from here
+        </p>
+        ${demoHtml}
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+          <button style="padding: 0.5rem 1rem; border-radius: 0.75rem; background: black; color: white; border: none; font-size: 0.875rem;">
+            Join now
+          </button>
+          <button style="padding: 0.5rem 1rem; border-radius: 0.75rem; background: white; color: black; border: 1px solid black; font-size: 0.875rem;">
+            Signup
+          </button>
+        </div>
+      </div>
+    `;
+    
+    // Clear demo after user starts typing
+    setTimeout(() => {
+      this.editorEl.addEventListener('input', () => {
+        if (this.editorEl.innerHTML.includes('Build awesome apps')) {
+          this.editorEl.innerHTML = '';
+          this.editorEl.focus();
+        }
+      }, { once: true });
+    }, 1000);
   }
 
   /**

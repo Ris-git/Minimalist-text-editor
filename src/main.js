@@ -9,6 +9,7 @@ import Export from './export.js';
 import CloudSync from './cloud.js';
 import storage from './storage.js';
 import Settings from './settings.js';
+import FormattingToolbar from './ui/formatting-toolbar.js';
 
 // Initialize Editor
 const editor = new Editor();
@@ -19,6 +20,9 @@ const settings = new Settings();
 // Initialize Cloud Sync
 const cloudSync = new CloudSync();
 cloudSync.init();
+
+// Initialize Formatting Toolbar
+const formattingToolbar = new FormattingToolbar();
 
 // Setup Save button (triggers export menu)
 const saveBtn = document.getElementById('save-btn');
