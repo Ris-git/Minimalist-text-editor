@@ -2,6 +2,10 @@
 
 A minimalist, distraction-free online text editor designed for content writers and students. Built with vanilla JavaScript, IndexedDB, and modern web APIs.
 
+## 🚀 Live Demo
+
+**Try it now:** [https://minimalist-text-editor.vercel.app/](https://minimalist-text-editor.vercel.app/)
+
 ## Features
 
 - ✨ **Local-first** - Works completely offline, no server required
